@@ -41,7 +41,7 @@ $(document).ready(function(){
         getLocation();
     });
 });
-    //var x = document.getElementById('demo');
+    var x = document.getElementById('demo');
     function getLocation(){
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(showPosition);
@@ -52,7 +52,7 @@ $(document).ready(function(){
     }
     
     function showPosition(position){
-        //x.innerHTML = "latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
-        $('#demo').html("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+        x.innerHTML = "latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+        //$('#demo').html("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
     }
 </script>
