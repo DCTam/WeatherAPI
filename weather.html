@@ -4,22 +4,55 @@
     <head>
         <title>Weather</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     </head>
     
-<body>
+<body id="background">
     <div class="container-fluid text-center" id="main">
-        Weatherffffff
+        Weather
+        <br>
+        <a id='getBut' class='btn btn-primary'>Get weather</a>
+        <br>
+        <p id="demo">Change this</p>
     </div>
+    
+    
 </body>
 
 </html>
 
 <style>
     #main{
-        font-size: 50px;
+        font-size: 70px;
+        color: white;
+    }
+    
+    #background{
+        background-color: #333333;
     }
 </style>
 
 <script>
-
+$(document).ready(function(){
+    $('#getBut').on('click', function(){
+//        $('#demo').empty;
+//        $('#demo').html("hi");
+        getLocation();
+    });
+});
+    //var x = document.getElementById('demo');
+    function getLocation(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+        else {
+            $('#demo').html("Geolocation not supported");
+        }
+    }
+    
+    function showPosition(position){
+        //x.innerHTML = "latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+        $('#demo').html("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+    }
 </script>
