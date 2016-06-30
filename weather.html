@@ -22,7 +22,8 @@
 
 </html>
 
-<style>
+            
+<style text="text/css">
     #main{
         font-size: 70px;
         color: white;
@@ -34,17 +35,27 @@
 </style>
 
 <script>
+
+var lat;
+var long;
+var API_KEY;
+var stats;
+    
 $(document).ready(function(){
     $('#getBut').on('click', function(){
 //        $('#demo').empty;
 //        $('#demo').html("hi");
-        getLocation();
+        printHi();
+
+        //getLocation();
     });
 });
     //var x = document.getElementById('demo');
     function getLocation(){
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(showPosition);
+                            printHi();
+            
         }
         else {
             $('#demo').html("Geolocation not supported");
@@ -53,6 +64,26 @@ $(document).ready(function(){
     
     function showPosition(position){
         //x.innerHTML = "latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
-        $('#demo').html("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+        API_KEY = "api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=dfe9ed8aa9d92b8fffb71fb2a436666c";
+       
+        $.ajax({
+            url: API_KEY,
+            type: "GET",
+            success: function(data){
+                $('#demo').append("<p>" + data.main[0] + "<p>");
+            }
+            error: function(){
+                $('#demo').html("<p>" + "error" + "<p>");
+            }
+        });
+       // $('#demo').html("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+        //$('#demo').append("<p>" + API_KEY + "<p>");
+
+    }
+    
+    function printHi(){
+        alert("hi");
     }
 </script>
