@@ -40,8 +40,10 @@ var lat;
 var long;
 var API_KEY;
 var stats;
-var temp;
+var tempF;
+var tempC;
 var locationName;
+var iconNum;
 
     
 $(document).ready(function(){
@@ -59,26 +61,27 @@ $(document).ready(function(){
     }
     
     function showPosition(position){
-        lat = position.coords.latitude;
-        long = position.coords.longitude;
-       API_KEY = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=dfe9ed8aa9d92b8fffb71fb2a436666c";
+        lat = position.coords.latitude; //Latitude of current position
+        long = position.coords.longitude; //Longitude of current position
+        API_KEY = "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=dfe9ed8aa9d92b8fffb71fb2a436666c";
         getWeather();
-       //$('#demo').html("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
     }
     
     function getWeather(){
         $.getJSON(API_KEY, function(weather){
-            temp = ((weather.main.temp - 273.15) * 1.8) + 32;
+            tempF = ((weather.main.temp - 273.15) * 1.8) + 32;
+            tempC = (weather.main.temp - 273.15);
             locationName = weather.name;
+            iconNum = weather.weather.icon;
             printOutStat();
 
         });
     }
-        
+    
     
     function printOutStat(){
         $('#demo').html(temp.toFixed(1) + " Fahrenheit");
-        $('#demo').append("<p>" + locationName + "<p>");
+        $('#demo').append("<p>" + locationName + iconNum + "<p>");
     }
 
 </script>
