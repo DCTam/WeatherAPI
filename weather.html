@@ -13,8 +13,10 @@
         Weather
         <br>
         <a id='getBut' class='btn btn-primary'>Get weather</a>
+        <a id='weatherBut' class='btn btn-warning'>F or C</a>
         <br>
         <p id="demo">Change this</p>
+        <img src='' id='img'></img>
     </div>
     
     
@@ -25,7 +27,7 @@
             
 <style text="text/css">
     #main{
-        font-size: 70px;
+        font-size: 60px;
         color: white;
     }
     
@@ -36,21 +38,41 @@
 
 <script>
 
-var lat;
-var long;
-var API_KEY;
-var stats;
-var tempF;
-var tempC;
-var locationName;
-var iconNum;
+var lat; //Latitude value
+var long; //Longitude value
+var API_KEY; //OpenWeatherMap API key
+var tempF; //Fahrenheit value
+var tempC; //Celsius value
+var weatherStatus; //Current weather value
+var locationName; //Current location value
+var iconNum; //Icon number to call for OpenWeather API icon
+var tempChecker = false; //Boolean to check fahrenheit or celsius display
 
     
 $(document).ready(function(){
+    
+    //Button to call the API
     $('#getBut').on('click', function(){
         getLocation();
     });
+    
+    //Button to swap between fahrenheit or celsius display
+    $('#weatherBut').on('click', function(){
+        if (tempChecker == false){
+            $('#temp').empty();
+            $('#temp').html(tempC.toFixed(1) + " Celsius");
+            tempChecker = true;
+        }
+        else{
+            $('#temp').empty();
+            $('#temp').html(tempF.toFixed(1) + " Fahrenheit");
+            tempChecker = false;
+        }
+    });
+    
 });
+
+    //Function to start the navigator geolocation and check for compatibility
     function getLocation(){
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(showPosition);            
@@ -60,6 +82,7 @@ $(document).ready(function(){
         }
     }
     
+    //Function to acquire coordinates and creates the API key using those coordinates
     function showPosition(position){
         lat = position.coords.latitude; //Latitude of current position
         long = position.coords.longitude; //Longitude of current position
@@ -67,21 +90,22 @@ $(document).ready(function(){
         getWeather();
     }
     
+    //Use JSON to get the statistics wanted and save them in a variable
     function getWeather(){
         $.getJSON(API_KEY, function(weather){
             tempF = ((weather.main.temp - 273.15) * 1.8) + 32;
             tempC = (weather.main.temp - 273.15);
             locationName = weather.name;
-            iconNum = weather.weather.icon;
+            weatherStatus = weather.weather[0].main;
+            iconNum = weather.weather[0].icon;
             printOutStat();
-
         });
     }
     
-    
+    //Formats the statistics acquired and display to user
     function printOutStat(){
-        $('#demo').html(temp.toFixed(1) + " Fahrenheit");
-        $('#demo').append("<p>" + locationName + iconNum + "<p>");
+        $('#demo').html(locationName + "<br><span id='temp'>" + tempF.toFixed(1) + " Fahrenheit</span><br>" + weatherStatus + "<br>");
+        $('#img').attr('src', "http://openweathermap.org/img/w/"+ iconNum +".png");
     }
 
 </script>
